@@ -1,16 +1,12 @@
 {
   "name": "installer",
   "repo": "https://github.com/ksanaforge/installer.git",
-  "description": "hello world",
+  "description": "Ksana App Installer for node-webkit, iOS and Android",
   "version": "0.0.1",
   "keywords": [],
   "dependencies": {
     "ksanaforge/boot": "*",
     "brighthas/bootstrap": "*",
-    "ksana/document": "*",
-    "ksanaforge/fileinstaller": "*",
-    "ksanaforge/checkbrowser": "*",
-    "ksanaforge/htmlfs": "*",
     "installer/main": "*",
     "installer/comp1": "*"
   },
@@ -27,7 +23,5 @@
   "scripts": [
     "index.js"
   ],
-  "styles": [
-    "index.css"
-  ]
+  "styles": []
 }
