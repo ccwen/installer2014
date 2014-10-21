@@ -8,7 +8,12 @@
     "ksanaforge/boot": "*",
     "brighthas/bootstrap": "*",
     "installer/main": "*",
-    "installer/comp1": "*"
+    "installer/comp1": "*",
+    "installer/installed": "*",
+    "installer/store": "*",
+    "installer/aboutdb": "*",
+    "installer/about": "*",
+    "installer/logo": "*"
   },
   "development": {},
   "paths": [
