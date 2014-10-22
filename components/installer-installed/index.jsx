@@ -4,7 +4,8 @@
 
 //var othercomponent=Require("other"); 
 var testdata=[
-  {dbid:"tipitaka",caption:"Pali Tipitaka",path:"tipitaka",hasUpdate:true}
+  {dbid:"Installer",caption:"Installer",path:"installer"}
+  ,{dbid:"tipitaka",caption:"Pali Tipitaka",path:"tipitaka",hasUpdate:true}
   ,{dbid:"cbeta",caption:"CBETA大正藏",path:"cbeta2014",hasUpdate:true}
   ,{dbid:"yinshun",caption:"印順法師佛學著作集",path:"yinshun"}
 ]
@@ -30,7 +31,7 @@ var installed = React.createClass({
 
     //delete button is distracting, wait for 3 second
     clearTimeout(this.timer);
-    this.timer=setTimeout(this.showDeleteButton.bind(this),3000);
+    this.timer=setTimeout(this.showDeleteButton,3000);
   },
   renderUpdateButton:function(item) {
     if (item.hasUpdate) {
@@ -51,6 +52,7 @@ var installed = React.createClass({
   },
   renderItem:function(item,idx) {
     var classes="";
+    if (item.path=="installer" && !item.hasUpdate) return null;
     if (idx==this.state.selected) classes="info";
     return (<tr data-i={idx} onClick={this.select} key={"i"+idx} className={classes} >
 
