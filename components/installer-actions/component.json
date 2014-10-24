@@ -1,6 +1,6 @@
 {
-  "name": "store",
-  "repo": "installer/store",
+  "name": "actions",
+  "repo": "installer/actions",
   "description": "non visual module",
   "version": "0.0.1",
   "keywords": [],
@@ -8,6 +8,6 @@
   "development": {},
   "license": "MIT",
   "main": "index.js",
-  "scripts": ["index.js","stores.js"],
+  "scripts": ["index.js","module1.js"],
   "styles": []
 }

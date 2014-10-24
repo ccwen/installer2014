@@ -2,23 +2,28 @@
 
 /* to rename the component, change name of ./component.js and  "dependencies" section of ../../component.js */
 
-//var othercomponent=Require("other"); 
-var testdata=[
-  {dbid:"Installer",caption:"Installer",path:"installer"}
-  ,{dbid:"tipitaka",caption:"Pali Tipitaka",path:"tipitaka",hasUpdate:true}
-  ,{dbid:"cbeta",caption:"CBETA大正藏",path:"cbeta2014",hasUpdate:true}
-  ,{dbid:"yinshun",caption:"印順法師佛學著作集",path:"yinshun"}
-]
-
+var store=Require("store"); 
+var actions=Require("actions");
 var installed = React.createClass({
   getInitialState: function() {
     return {
-      installed: testdata, selected:0, deletable:false
+      installed: [], selected:0, deletable:false
     };
+  },
+  onDownloadsChanged:function(downloads) {
+    this.setState({installed:downloads});
+    setTimeout(actions.checkHasUpdate,1000);
+  },
+  componentDidMount:function() {
+    this.unsubscribe = store.downloaded.listen(this.onDownloadsChanged);
+    actions.getDownload();
+  },
+  componentWillUnmount:function() {
+    this.unsubscribe();
   },
   opendb:function(e) {
     this.setState({deletable:false});
-    this.props.action("open",e.target.dataset['path']);
+    actions.openApp(e.target.dataset['path']);
   },
   showDeleteButton:function() {
     this.setState({deletable:true});

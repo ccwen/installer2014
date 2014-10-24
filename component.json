@@ -7,13 +7,16 @@
   "dependencies": {
     "ksanaforge/boot": "*",
     "brighthas/bootstrap": "*",
+    "spoike/reflux": "*",
     "installer/main": "*",
     "installer/comp1": "*",
     "installer/installed": "*",
-    "installer/store": "*",
+    "installer/shelf": "*",
     "installer/aboutdb": "*",
     "installer/about": "*",
-    "installer/logo": "*"
+    "installer/logo": "*",
+    "installer/actions": "*",
+    "installer/store": "*"
   },
   "development": {},
   "paths": [
