@@ -1,6 +1,6 @@
 {
-  "name": "store",
-  "repo": "installer/store",
+  "name": "stores",
+  "repo": "installer/stores",
   "description": "non visual module",
   "version": "0.0.1",
   "keywords": [],

@@ -10,6 +10,14 @@ Require("bootstrap");
    check if update available for installed app
 
    for node-webkit, Android and iOS only
+
+   share database with email,
+   open with http://appurl.org/docs
+
+
+   downloaded,
+   public stores
+   invited by friend
 */
 var logo=Require("logo");
 var shelf=Require("shelf");

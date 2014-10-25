@@ -16,7 +16,7 @@
     "installer/about": "*",
     "installer/logo": "*",
     "installer/actions": "*",
-    "installer/store": "*"
+    "installer/stores": "*"
   },
   "development": {},
   "paths": [

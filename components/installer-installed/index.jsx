@@ -2,7 +2,7 @@
 
 /* to rename the component, change name of ./component.js and  "dependencies" section of ../../component.js */
 
-var store=Require("store"); 
+var stores=Require("stores"); 
 var actions=Require("actions");
 var installed = React.createClass({
   getInitialState: function() {
@@ -15,7 +15,7 @@ var installed = React.createClass({
     setTimeout(actions.checkHasUpdate,1000);
   },
   componentDidMount:function() {
-    this.unsubscribe = store.downloaded.listen(this.onDownloadsChanged);
+    this.unsubscribe = stores.downloaded.listen(this.onDownloadsChanged);
     actions.getDownload();
   },
   componentWillUnmount:function() {
@@ -50,9 +50,9 @@ var installed = React.createClass({
   },
   renderCaption:function(item,idx) {
     if (idx==this.state.selected) {
-      return <a className="caption" onClick={this.open}>{item.caption}</a>
+      return <a className="caption" onClick={this.open}>{item.title}</a>
     } else { 
-      return <span>{item.caption}</span>
+      return <span>{item.title}</span>
     }
   },
   renderItem:function(item,idx) {
