@@ -2,6 +2,8 @@
   "name": "installer",
   "description": "New html5 application",
   "version": "0.0.1",
+  "inject-js-start": "nodemain.js",
+  "inject-js-end": "systemmenu.js",
   "main": "index.html",
   "single-instance":true,
   "window": {

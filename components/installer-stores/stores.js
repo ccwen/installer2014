@@ -25,15 +25,11 @@ var jsonp=function(url,callback,context) {
 var downloaded = Reflux.createStore({
 		listenables: actions,
     onGetDownload: function() {
-      jsonp("http://accelon.github.io/apps.json?"+Math.random(),function(_data){
-        data=_data;
-        this.trigger(data);
-      },this);
+      var apps=kfs.listApps();
+      this.trigger(apps);
     },
     onCheckHasUpdate:function() {
-    	data[0].hasUpdate=true;
-    	data[1].hasUpdate=true;
-    	this.trigger(data);
+    	//this.trigger(data);
     }
 });
 var availables = Reflux.createStore({

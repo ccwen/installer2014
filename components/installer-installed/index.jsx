@@ -4,11 +4,16 @@
 
 var stores=Require("stores"); 
 var actions=Require("actions");
+
 var installed = React.createClass({
   getInitialState: function() {
     return {
       installed: [], selected:0, deletable:false
     };
+  },
+  switchApp:function(path){
+    process.chdir("../"+path);
+    document.location.href= "../"+path+"/index.html";  
   },
   onDownloadsChanged:function(downloads) {
     this.setState({installed:downloads});
@@ -23,7 +28,8 @@ var installed = React.createClass({
   },
   opendb:function(e) {
     this.setState({deletable:false});
-    actions.openApp(e.target.dataset['path']);
+    var path=e.target.dataset['path'];
+    this.switchApp(path);
   },
   showDeleteButton:function() {
     this.setState({deletable:true});
@@ -36,7 +42,9 @@ var installed = React.createClass({
 
     //delete button is distracting, wait for 3 second
     clearTimeout(this.timer);
-    this.timer=setTimeout(this.showDeleteButton,3000);
+    if (ksanagap.platform=="ios" || ksanagap.platform=="android") {
+      this.timer=setTimeout(this.showDeleteButton,3000);
+    }
   },
   renderUpdateButton:function(item) {
     if (item.hasUpdate) {
@@ -50,7 +58,7 @@ var installed = React.createClass({
   },
   renderCaption:function(item,idx) {
     if (idx==this.state.selected) {
-      return <a className="caption" onClick={this.open}>{item.title}</a>
+      return <a className="caption" data-path={item.path} onClick={this.opendb}>{item.title}</a>
     } else { 
       return <span>{item.title}</span>
     }
@@ -59,7 +67,7 @@ var installed = React.createClass({
     var classes="";
     if (item.path=="installer" && !item.hasUpdate) return null;
     if (idx==this.state.selected) classes="info";
-    return (<tr data-i={idx} onClick={this.select} key={"i"+idx} className={classes} >
+    return (<tr data-i={idx}  onClick={this.select} key={"i"+idx} className={classes} >
 
       <td>{this.renderUpdateButton(item,idx)} {this.renderCaption(item,idx)}</td>
       <td>{this.renderDeleteButton(item,idx)}</td>
