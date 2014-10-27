@@ -11,7 +11,6 @@ var goHome=function() {
   switchApp("installer");
 }
 
-
 var createMenu=function(apps) {
       var gui = nodeRequire('nw.gui');
       var mb = new gui.Menu({type:"menubar"});
@@ -21,6 +20,7 @@ var createMenu=function(apps) {
       var appsItem = new gui.MenuItem({ label: 'Apps' });
 
       apps.map(function(app) {
+        if (app.path=="installer") return;
         appsMenu.append(new gui.MenuItem({ label: app.title, click:appmenuclick.bind(null,app)}));
       });
 
@@ -36,5 +36,14 @@ var createMenu=function(apps) {
       gui.Window.get().menu = mb; 
 
 }
-var apps=kfs.listApps();
-createMenu(apps);
+var createAppMenu=function(){
+      var apps=kfs.listApps();
+      createMenu(apps);      
+}
+
+var timer1=setTimeout(function(){
+      if (typeof kfs!="undefined") {
+            createAppMenu();
+            clearInterval(timer1);
+      }
+},200);

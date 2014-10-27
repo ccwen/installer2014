@@ -6,35 +6,26 @@ var testdata=[
   ,{dbid:"cbeta",title:"CBETA大正藏",path:"cbeta2014"}
   ,{dbid:"yinshun",title:"印順法師佛學著作集",path:"yinshun"}
 ]
-
-var data=[];
-
-var jsonp=function(url,callback,context) {
-  var script=document.getElementById("jsonp");
-  if (!script) {
-    script=document.createElement('script');
-    script.setAttribute('id', "jsonp");
-    document.getElementsByTagName('head')[0].appendChild(script); 
-  }
-  window.jsonp_handler=function(data) {
-    callback.apply(context,[data]);
-  }
-  script.setAttribute('src', url);
-}
+var apps=[];
 
 var downloaded = Reflux.createStore({
 		listenables: actions,
     onGetDownload: function() {
-      var apps=kfs.listApps();
+      apps=kfs.listApps();
       this.trigger(apps);
     },
     onCheckHasUpdate:function() {
+      //installed apps local json
+      //apps for each
+      //task queue
+      //retrieve ksana.json from remote website
+      //compare the time stamps
+      //download changed file
+
     	//this.trigger(data);
     }
 });
-var availables = Reflux.createStore({
 
-})
-var stores={downloaded:downloaded, availables:availables };
+var stores={downloaded:downloaded};
 
 module.exports=stores;
