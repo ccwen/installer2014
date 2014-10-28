@@ -6,6 +6,7 @@
   "keywords": [],
   "dependencies": {
     "ksanaforge/boot": "*",
+    "ksanaforge/liveupdate": "*",
     "brighthas/bootstrap": "*",
     "spoike/reflux": "*",
     "installer/main": "*",
@@ -13,7 +14,8 @@
     "installer/installed": "*",
     "installer/banner": "*",
     "installer/actions": "*",
-    "installer/stores": "*"
+    "installer/stores": "*",
+    "installer/download": "*"
   },
   "development": {},
   "paths": [

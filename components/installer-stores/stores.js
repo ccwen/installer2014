@@ -1,13 +1,12 @@
 var Reflux=Require("reflux");
 var actions=Require("actions");
-var testdata=[
-  {dbid:"Installer",title:"Installer",path:"installer"}
-  ,{dbid:"tipitaka",title:"Pali Tipitaka",path:"tipitaka"}
-  ,{dbid:"cbeta",title:"CBETA大正藏",path:"cbeta2014"}
-  ,{dbid:"yinshun",title:"印順法師佛學著作集",path:"yinshun"}
-]
-var apps=[];
+var liveupdate=Require("liveupdate");
 
+var apps=[];
+var findAppById=function(id) {
+  var r=apps.filter(function(app) { return app.dbid==id}  );
+  if (r.length) return r[0];
+}
 var downloaded = Reflux.createStore({
 		listenables: actions,
     onGetDownload: function() {
@@ -15,14 +14,14 @@ var downloaded = Reflux.createStore({
       this.trigger(apps);
     },
     onCheckHasUpdate:function() {
-      //installed apps local json
-      //apps for each
-      //task queue
-      //retrieve ksana.json from remote website
-      //compare the time stamps
-      //download changed file
-
-    	//this.trigger(data);
+      liveupdate.getUpdatables(apps,function(updatables){
+        for (var i=0;i<updatables.length;i++) {
+          var app=findAppById(updatables[i].dbid);
+          app.hasUpdate=true;
+          app.newfiles=updatables[i].newfiles;
+        }
+        this.trigger(apps);
+      },this);
     }
 });
 
