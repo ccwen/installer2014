@@ -14,17 +14,22 @@ var installed = React.createClass({
   switchApp:function(path){
     ksanagap.switchApp(path);
   },
+  onUpdatablesChanged:function(updatables) {
+
+  },
   onDownloadsChanged:function(downloads) {
     this.setState({installed:downloads});
     this.props.action("select",this.state.installed[0]);
     setTimeout(actions.checkHasUpdate,1000);
   },
   componentDidMount:function() {
-    this.unsubscribe = stores.downloaded.listen(this.onDownloadsChanged);
+    this.unsubscribe1 = stores.downloaded.listen(this.onDownloadsChanged);
+    this.unsubscribe2 = stores.updatables.listen(this.onUpdatablesChanged);
     actions.getDownload();
   },
   componentWillUnmount:function() {
-    this.unsubscribe();
+    this.unsubscribe1();
+    this.unsubscribe2();
   },
   opendb:function(e) {
     this.setState({deletable:false});
