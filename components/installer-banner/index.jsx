@@ -3,16 +3,20 @@
 /* to rename the component, change name of ./component.js and  "dependencies" section of ../../component.js */
 
 //var othercomponent=Require("other"); 
-var logo = React.createClass({
+var banner = React.createClass({
   getInitialState: function() {
     return {};
+  },
+  imageNotFound:function() {
+    this.refs.banner.getDOMNode().src="banner.png";
   },
   render: function() {
     return (
       <div>
-        <h2> Accelon <i>Mobile</i></h2>
+        <img ref="banner" className="banner" src={this.props.image}
+        onError={this.imageNotFound}/>
       </div>
     );
   }
 });
-module.exports=logo;
+module.exports=banner;

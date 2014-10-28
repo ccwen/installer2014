@@ -25,18 +25,18 @@ Require("bootstrap");
    downloaded,
    invited by friend (accelon://)
 */ 
-var logo=Require("logo");
+var banner=Require("banner");
 var installed=Require("installed");
 var stores=Require("stores");
 var main = React.createClass({
   getInitialState: function() {
-    return {dirs:[]};
+    return {dirs:[],image:"banner.png"};
   },
   componentDidMount:function() {
+
   },
   opennew:function() {
     // window.open(   'https://github.com', '_blank' ); for browser
-
     var gui = nodeRequire('nw.gui'); 
     var win = gui.Window.open('http://www.github.com', {
       position: 'center',
@@ -45,11 +45,18 @@ var main = React.createClass({
     });
   },
   //<a onClick={this.opennew}>google</a>
+  action:function() {
+    var args=Array.prototype.slice.call(arguments);
+    var type=args.shift();
+    if (type=="select") {
+      this.setState({image:"../"+args[0].dbid+"/banner.png"});
+    }
+  },
   render: function() {
     return (
       <div className="main">
-        <logo/>
-        <installed/>
+        <banner image={this.state.image}/>
+        <installed action={this.action}/>
         
       </div>
     );

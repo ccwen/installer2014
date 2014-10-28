@@ -11,7 +11,7 @@ var apps=[];
 var downloaded = Reflux.createStore({
 		listenables: actions,
     onGetDownload: function() {
-      apps=kfs.listApps();
+      apps=JSON.parse(kfs.listApps());
       this.trigger(apps);
     },
     onCheckHasUpdate:function() {

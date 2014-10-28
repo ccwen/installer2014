@@ -37,7 +37,7 @@ var createMenu=function(apps) {
 
 }
 var createAppMenu=function(){
-      var apps=kfs.listApps();
+      var apps=JSON.parse(kfs.listApps());
       createMenu(apps);      
 }
 

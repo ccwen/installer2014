@@ -12,11 +12,11 @@ var installed = React.createClass({
     };
   },
   switchApp:function(path){
-    process.chdir("../"+path);
-    document.location.href= "../"+path+"/index.html";  
+    ksanagap.switchApp(path);
   },
   onDownloadsChanged:function(downloads) {
     this.setState({installed:downloads});
+    this.props.action("select",this.state.installed[0]);
     setTimeout(actions.checkHasUpdate,1000);
   },
   componentDidMount:function() {
@@ -45,6 +45,7 @@ var installed = React.createClass({
     if (ksanagap.platform=="ios" || ksanagap.platform=="android") {
       this.timer=setTimeout(this.showDeleteButton,3000);
     }
+    this.props.action("select",this.state.installed[target.dataset.i]);
   },
   renderUpdateButton:function(item) {
     if (item.hasUpdate) {

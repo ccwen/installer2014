@@ -1,6 +1,6 @@
 {
-  "name": "logo",
-  "repo": "installer/logo",
+  "name": "banner",
+  "repo": "installer/banner",
   "description": "hello world",
   "version": "0.0.1",
   "keywords": [],
