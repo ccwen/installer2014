@@ -23,22 +23,24 @@ var download = React.createClass({
     this.props.action("backFromDownload");
   },
   updateStatus:function() {
-    var status=liveupdate.status(this.state.downloadid);
+    var status=liveupdate.status();
     this.setState({nfile:status.nfile, filename: this.props.app.newfiles[status.nfile], downloadedByte :status.downloadedByte });
     if (status.done) {
       clearInterval(this.timer1);
-      this.setState({downloading:false,done:true});
+      this.setState({downloading:false,done:status.done});
     }
   },
   startDownload:function() {
-    liveupdate.start( this.props.app, function(downloadid){
-      this.setState({downloading:true, downloadid: downloadid});
-      this.timer1=setInterval(this.updateStatus.bind(this), 1000);
+    liveupdate.start( this.props.app, function(success){
+      if (success) {
+        this.setState({downloading:true});
+        this.timer1=setInterval(this.updateStatus.bind(this), 1000);
+      }
     },this);
   },
   cancelDownload:function() {
     clearInterval(this.timer1);
-    liveupdate.cancel(this.state.downloadid);
+    liveupdate.cancel();
   },
   renderDownloading:function() {
     var percent= Math.floor(100*(this.state.downloadedByte  / this.totalDownloadByte() ));
@@ -78,6 +80,7 @@ var download = React.createClass({
     return (
       <div>
         <div>Download Finished {this.props.app.title}</div>
+        <div>Status : {this.state.done} </div>
         <div className="col-sm-2 col-sm-offset-5">
             <a onClick={this.backFromDownload} className="btn btn-success btn-lg">Ok</a><br/>
         </div>
