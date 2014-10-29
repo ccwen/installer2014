@@ -33,9 +33,7 @@ var main = React.createClass({
   getInitialState: function() {
     return {dirs:[],image:"banner.png",app:null,askingDownload:false};
   },
-  componentDidMount:function() {
 
-  },
   opennew:function() {
     // window.open(   'https://github.com', '_blank' ); for browser
     var gui = nodeRequire('nw.gui'); 

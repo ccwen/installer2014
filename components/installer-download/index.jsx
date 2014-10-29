@@ -3,6 +3,7 @@
 /* to rename the component, change name of ./component.js and  "dependencies" section of ../../component.js */
 
 var liveupdate=Require("liveupdate"); 
+
 var download = React.createClass({
   getInitialState: function() {
     return {downloading:false,downloadedByte:0};
@@ -21,22 +22,38 @@ var download = React.createClass({
   backFromDownload:function() {
     this.props.action("backFromDownload");
   },
+  updateStatus:function() {
+    var status=liveupdate.status(this.state.downloadid);
+    this.setState({nfile:status.nfile, filename: this.props.app.newfiles[status.nfile], downloadedByte :status.downloadedByte });
+    if (status.done) {
+      clearInterval(this.timer1);
+      this.setState({downloading:false,done:true});
+    }
+  },
   startDownload:function() {
-    this.setState({downloading:true});
+    liveupdate.start( this.props.app, function(downloadid){
+      this.setState({downloading:true, downloadid: downloadid});
+      this.timer1=setInterval(this.updateStatus.bind(this), 1000);
+    },this);
+  },
+  cancelDownload:function() {
+    clearInterval(this.timer1);
+    liveupdate.cancel(this.state.downloadid);
   },
   renderDownloading:function() {
+    var percent= Math.floor(100*(this.state.downloadedByte  / this.totalDownloadByte() ));
     return (
     <div>
       <div className="col-sm-offset-2 col-sm-8">
           <div>Downloading {this.props.app.title}<br/></div>
           <div className="progress">
-            <div className="progress-bar" style={{"width": "20%"}}>2%</div>
+            <div className="progress-bar" style={{"width": percent+"%"}}>{percent}%</div>
           </div>
           <div>Remaining {this.remainHumanSize()} <br/><hr/></div>
       </div>
 
       <div className="col-sm-2 col-sm-offset-5">
-            <a onClick={this.startDownload} className="btn btn-danger">Cancel Download</a>
+            <a onClick={this.cancelDownload} className="btn btn-danger">Cancel Download</a>
         </div>
     </div>
     );
@@ -57,9 +74,24 @@ var download = React.createClass({
       </div>
     );
   },
+  renderDone:function() {
+    return (
+      <div>
+        <div>Download Finished {this.props.app.title}</div>
+        <div className="col-sm-2 col-sm-offset-5">
+            <a onClick={this.backFromDownload} className="btn btn-success btn-lg">Ok</a><br/>
+        </div>
+      </div>
+    );
+  },
   render: function() {
-    return this.renderDownloading();
-    //return this.state.downloading?this.renderDownloading():this.renderAsking();
+    if (this.state.done) {
+      return this.renderDone();
+    } else if (this.state.downloading) {
+      return this.renderDownloading();
+    } else {
+      return this.renderAsking();
+    }
   }
 });
 module.exports=download;
