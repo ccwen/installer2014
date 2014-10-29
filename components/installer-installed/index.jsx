@@ -15,7 +15,7 @@ var installed = React.createClass({
     ksanagap.switchApp(path);
   },
   onUpdatablesChanged:function(updatables) {
-
+    this.setState({installed:updatables});
   },
   onDownloadsChanged:function(downloads) {
     this.setState({installed:downloads});
@@ -52,9 +52,14 @@ var installed = React.createClass({
     }
     this.props.action("select",this.state.installed[target.dataset.i]);
   },
-  renderUpdateButton:function(item) {
+  askDownload:function(e) {
+    var n=e.target.dataset.n;
+    var item=this.state.installed[n];
+    this.props.action("askdownload",item);
+  },
+  renderUpdateButton:function(item,idx) {
     if (item.hasUpdate) {
-      return <a className="btn btn-warning">Update</a>
+      return <a data-n={idx} onClick={this.askDownload} className="btn btn-warning">Update</a>
     }
   },
   renderDeleteButton:function(item,idx) {
@@ -74,8 +79,7 @@ var installed = React.createClass({
     if (item.path=="installer" && !item.hasUpdate) return null;
     if (idx==this.state.selected) classes="info";
     return (<tr data-i={idx}  onClick={this.select} key={"i"+idx} className={classes} >
-
-      <td>{this.renderUpdateButton(item,idx)} {this.renderCaption(item,idx)}</td>
+      <td>{this.renderCaption(item,idx)} {this.renderUpdateButton(item,idx)}</td>
       <td>{this.renderDeleteButton(item,idx)}</td>
     </tr>);
   },

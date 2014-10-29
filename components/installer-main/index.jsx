@@ -28,9 +28,10 @@ Require("bootstrap");
 var banner=Require("banner");
 var installed=Require("installed");
 var stores=Require("stores");
+var download=Require("download");
 var main = React.createClass({
   getInitialState: function() {
-    return {dirs:[],image:"banner.png"};
+    return {dirs:[],image:"banner.png",app:null,askingDownload:false};
   },
   componentDidMount:function() {
 
@@ -44,22 +45,34 @@ var main = React.createClass({
       height: 527
     });
   },
-  //<a onClick={this.opennew}>google</a>
+  askDownload:function(app) { //from hashtag or installed
+    this.setState({askingDownload:true,app:app});
+  },
   action:function() {
     var args=Array.prototype.slice.call(arguments);
     var type=args.shift();
     if (type=="select") {
       this.setState({image:"../"+args[0].dbid+"/banner.png"});
+    } else if (type=="askdownload") {
+      this.askDownload(args[0]);
+    } else if (type=="backFromDownload") {
+      this.setState({askingDownload:false,app:null});  
     }
+  },
+  
+  renderAskDownload:function() {
+    return <download app={this.state.app} action={this.action}/>
+  },
+  renderInstalled:function() {
+    return <installed action={this.action}/>
   },
   render: function() {
     return (
       <div className="main">
         <banner image={this.state.image}/>
-        <installed action={this.action}/>
-        
+        {this.state.askingDownload?this.renderAskDownload():this.renderInstalled()}    
       </div>
-    );
+    );    
   }
 });
 module.exports=main;
