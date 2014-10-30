@@ -9,7 +9,10 @@ var download = React.createClass({
     return {downloading:false,downloadedByte:0};
   },
   totalDownloadByte:function() {
-    var total=this.props.app.newfilesizes.reduce(function(p,c){return p+c},0);
+    //app to be updated has newfilesize
+    //new app only has filesizes
+    var filesizes=this.props.app.newfilesizes || this.props.app.filesizes;
+    var total=filesizes.reduce(function(p,c){return p+c},0);
     return total;
   },
   humanSize:function() {
@@ -24,7 +27,8 @@ var download = React.createClass({
   },
   updateStatus:function() {
     var status=liveupdate.status();
-    this.setState({nfile:status.nfile, filename: this.props.app.newfiles[status.nfile], downloadedByte :status.downloadedByte });
+    var files=this.props.app.newfiles || this.props.app.files;
+    this.setState({nfile:status.nfile, filename: files[status.nfile], downloadedByte :status.downloadedByte });
     if (status.done) {
       clearInterval(this.timer1);
       this.setState({downloading:false,done:status.done});
@@ -64,7 +68,6 @@ var download = React.createClass({
     return (
       <div>
         <a onClick={this.backFromDownload} className="btn btn-warning">Back</a><br/>
-
         App to download:{this.props.app.title} ({this.props.app.dbid}) <br/>
         Total size: <span>{this.humanSize()}</span><br/>
         <div>
@@ -76,13 +79,18 @@ var download = React.createClass({
       </div>
     );
   },
+  openapp:function() {
+    ksanagap.switchApp(this.props.app.dbid);
+  },
   renderDone:function() {
     return (
       <div>
+        <a onClick={this.backFromDownload} className="btn btn-warning">Back</a><br/>
+
         <div>Download Finished {this.props.app.title}</div>
         <div>Status : {this.state.done} </div>
         <div className="col-sm-2 col-sm-offset-5">
-            <a onClick={this.backFromDownload} className="btn btn-success btn-lg">Ok</a><br/>
+            <a onClick={this.openapp} className="btn btn-success btn-lg">Start</a><br/>
         </div>
       </div>
     );

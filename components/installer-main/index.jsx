@@ -29,11 +29,30 @@ var banner=Require("banner");
 var installed=Require("installed");
 var stores=Require("stores");
 var download=Require("download");
+var liveupdate=Require("liveupdate");
 var main = React.createClass({
   getInitialState: function() {
     return {dirs:[],image:"banner.png",app:null,askingDownload:false};
   },
+  checkHashTag:function(hash) {
+    var idx=hash.indexOf("installfrom=");
+    if (idx==-1) return;
+    var installurl=hash.substring(idx+12).replace(/accelon:/g,'http:');
 
+    var dbid=installurl.match(/\/([^\/]*?)\/?$/);
+    installurl+='/ksana.js';
+    if (dbid) {
+      dbid=dbid[1];
+      console.log(installurl);
+      liveupdate.jsonp(installurl,dbid,function(app){
+        this.askDownload(app);
+      },this);
+    }
+  },
+  componentDidMount:function() {
+    if (window.location.hash)  this.checkHashTag(window.location.hash);
+    //check hash tag
+  },
   opennew:function() {
     // window.open(   'https://github.com', '_blank' ); for browser
     var gui = nodeRequire('nw.gui'); 
