@@ -45,6 +45,7 @@ var download = React.createClass({
   cancelDownload:function() {
     clearInterval(this.timer1);
     liveupdate.cancel();
+    this.setState({downloading:false});
   },
   renderDownloading:function() {
     var percent= Math.floor(100*(this.state.downloadedByte  / this.totalDownloadByte() ));
