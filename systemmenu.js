@@ -12,33 +12,27 @@ var goHome=function() {
 }
 
 var createMenu=function(apps) {
-      var gui = nodeRequire('nw.gui');
-      var mb = new gui.Menu({type:"menubar"});
+  if (!(apps && apps.length) )return;
+  var gui = nodeRequire('nw.gui');
+  var mb = new gui.Menu({type:"menubar"});
+  var appsMenu= new gui.Menu();
+  var appsItem = new gui.MenuItem({ label: 'Apps' });
+  apps.map(function(app) {
+    if (app.path=="installer") return;
+    appsMenu.append(new gui.MenuItem({ label: app.title, click:appmenuclick.bind(null,app)}));
+  });
 
-      var appsMenu= new gui.Menu();
+  appsItem.submenu=appsMenu;
+  if (mb.createMacBuiltin) mb.createMacBuiltin("node-webkit");
+  mb.append(appsItem);
+  var homeItem = new gui.MenuItem({ label: 'Home' ,click:goHome});
+  mb.append(homeItem);
 
-      var appsItem = new gui.MenuItem({ label: 'Apps' });
-
-      apps.map(function(app) {
-        if (app.path=="installer") return;
-        appsMenu.append(new gui.MenuItem({ label: app.title, click:appmenuclick.bind(null,app)}));
-      });
-
-      appsItem.submenu=appsMenu;
-
-      if (mb.createMacBuiltin) mb.createMacBuiltin("node-webkit");
-
-      mb.append(appsItem);
-
-      var homeItem = new gui.MenuItem({ label: 'Home' ,click:goHome});
-      mb.append(homeItem);
-
-      gui.Window.get().menu = mb; 
-
+  gui.Window.get().menu = mb; 
 }
 var createAppMenu=function(){
-      var apps=JSON.parse(kfs.listApps());
-      createMenu(apps);      
+    var apps=JSON.parse(kfs.listApps());
+    createMenu(apps);
 }
 
 var timer1=setTimeout(function(){
