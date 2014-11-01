@@ -5,7 +5,7 @@
   "inject-js-start": "nodemain.js",
   "inject-js-end": "systemmenu.js",
   "main": "index.html",
-  "single-instance":true,
+  "single-instance":false,
   "window": {
     "toolbar": true,
     "width": 1152,

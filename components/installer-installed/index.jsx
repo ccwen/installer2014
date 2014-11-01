@@ -69,9 +69,10 @@ var installed = React.createClass({
   },
   renderCaption:function(item,idx) {
     if (idx==this.state.selected) {
-      return <a className="caption" data-path={item.path} onClick={this.opendb}>{item.title}</a>
+      return <button title={item.version +"-"+ item.build} className="caption" data-path={item.path} onClick={this.opendb}>{item.title}</button>
     } else { 
-      return <span>{item.title}</span>
+      //https://github.com/facebook/react/issues/134
+      return <a href="#" onClick={this.select}>{item.title}</a>
     }
   },
   renderItem:function(item,idx) {
@@ -83,12 +84,21 @@ var installed = React.createClass({
       <td>{this.renderDeleteButton(item,idx)}</td>
     </tr>);
   },
+  renderWelcome:function() {
+    if (this.state.installed && this.state.installed.length<2)  
+    return ( <a onClick={this.goAccelonWebsite} href="#">Download Accelon Apps</a> );
+    else return <span></span>;
+  },
+  goAccelonWebsite:function() {
+    window.open("http://accelon.github.io");
+  },
   render: function() {
     return (
       <div>
         <table  className="table table-hover">
         {this.state.installed.map(this.renderItem)}
         </table>
+        {this.renderWelcome()}
       </div>
     );
   }

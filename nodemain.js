@@ -9,6 +9,5 @@ if (typeof process !="undefined") {			// checking if node.js is running
 			if (require("fs").existsSync(watchfn)){
 				require(watchfn);	// setup developing environment
 			}	
-  			
 	}
 }
