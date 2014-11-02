@@ -47,7 +47,7 @@ var installed = React.createClass({
 
     //delete button is distracting, wait for 3 second
     clearTimeout(this.timer);
-    if (ksanagap.platform=="ios" || ksanagap.platform=="android") {
+    if (ksana.platform=="ios" || ksana.platform=="android") {
       this.timer=setTimeout(this.showDeleteButton,3000);
     }
     this.props.action("select",this.state.installed[target.dataset.i]);
@@ -62,9 +62,13 @@ var installed = React.createClass({
       return <a data-n={idx} onClick={this.askDownload} className="btn btn-warning">Update</a>
     }
   },
+  deleteApp:function(e) {
+    var path=e.target.dataset['path'];
+    if (path && path!="installer") kfs.deleteApp(path);
+  },
   renderDeleteButton:function(item,idx) {
-    if (idx==this.state.selected && this.state.deletable) {
-      return <a className="btn btn-danger pull-right">×</a>
+    if (idx==this.state.selected && this.state.deletable && item.path!="installer") {
+      return <a data-path={item.path} onClick={this.deleteApp} className="btn btn-danger pull-right">×</a>
     }
   },
   renderCaption:function(item,idx) {
@@ -85,9 +89,9 @@ var installed = React.createClass({
     </tr>);
   },
   renderWelcome:function() {
-    if (this.state.installed && this.state.installed.length<2)  
-    return ( <a onClick={this.goAccelonWebsite} href="#">Download Accelon Apps</a> );
-    else return <span></span>;
+    //if (this.state.installed && this.state.installed.length<2)  
+    return ( <div><hr/><a onClick={this.goAccelonWebsite} href="#">Download Accelon Apps</a></div> );
+    //else return <span></span>;
   },
   goAccelonWebsite:function() {
     window.open("http://accelon.github.io");
