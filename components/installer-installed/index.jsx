@@ -98,6 +98,15 @@ var installed = React.createClass({
   goWebsite:function() {
     window.open("http://accelon.github.io");
   },
+  renderEmpty:function() {
+    if (this.state.installed.length) {
+      return ( <span></span> );
+    } else {
+      return ( <div>
+        <a onClick={this.goWebsite} href="http://accelon.github.io">Get Accelon Database</a>
+      </div> );
+    }
+  },
   render: function() {
     return (
       <div>
@@ -107,6 +116,7 @@ var installed = React.createClass({
         <table className="table table-hover">
           {this.state.installed.map(this.renderItem)}
         </table> 
+          {this.renderEmpty()}
         </div>
       </div>
               {this.renderAccelon()}
