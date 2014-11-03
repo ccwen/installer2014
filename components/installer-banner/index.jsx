@@ -10,10 +10,13 @@ var banner = React.createClass({
   imageNotFound:function() {
     this.refs.banner.getDOMNode().src="banner.png";
   },
+  imgclick:function() {
+    this.props.action("bannerclick");
+  },
   render: function() {
     return (
       <div>
-        <img ref="banner" className="banner" src={this.props.image}
+        <img onClick={this.imgclick} ref="banner" className="banner" src={this.props.image}
         onError={this.imageNotFound}/>
       </div>
     );

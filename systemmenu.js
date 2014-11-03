@@ -19,7 +19,7 @@ var createMenu=function(apps) {
   var gui = nodeRequire('nw.gui');
   var mb = new gui.Menu({type:"menubar"});
   var appsMenu= new gui.Menu();
-  var appsItem = new gui.MenuItem({ label: 'Apps' });
+  var appsItem = new gui.MenuItem({ label: 'Database' });
 
   apps.map(function(app) {
     if (app.path=="installer") return;
@@ -32,9 +32,6 @@ var createMenu=function(apps) {
   appsItem.submenu=appsMenu;
   if (mb.createMacBuiltin) mb.createMacBuiltin("node-webkit");
   mb.append(appsItem);
-
-  var downloadItem = new gui.MenuItem({ label: 'Download App' ,click:goAccelonWebsite});
-  mb.append(downloadItem);
 
   gui.Window.get().menu = mb; 
 }
@@ -49,9 +46,4 @@ var timer1=setTimeout(function(){
             clearInterval(timer1);
       }
 },200);
-
-var goAccelonWebsite=function() {
-  var gui = nodeRequire('nw.gui'); 
-  gui.Shell.openExternal('http://accelon.github.io'); 
-};
 

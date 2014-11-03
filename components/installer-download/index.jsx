@@ -69,8 +69,8 @@ var download = React.createClass({
     return (
       <div>
         <a onClick={this.backFromDownload} className="btn btn-warning">Back</a><br/>
-        App to download:{this.props.app.title} ({this.props.app.dbid}) <br/>
-        Total size: <span>{this.humanSize()}</span><br/>
+        {this.props.app.title} ({this.props.app.dbid})<br/>
+        Download Size: <span>{this.humanSize()}</span><br/>
         <div>
             <div className="col-sm-2 col-sm-offset-5">
               <a onClick={this.startDownload} className="btn btn-primary btn-lg">Download</a>
@@ -88,7 +88,7 @@ var download = React.createClass({
       <div>
         <a onClick={this.backFromDownload} className="btn btn-warning">Back</a><br/>
 
-        <div>Download Finished {this.props.app.title}</div>
+        <div>Download Completed {this.props.app.title}</div>
         <div>Status : {this.state.done} </div>
         <div className="col-sm-2 col-sm-offset-5">
             <a onClick={this.openapp} className="btn btn-success btn-lg">Start</a><br/>

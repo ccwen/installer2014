@@ -88,22 +88,30 @@ var installed = React.createClass({
       <td>{this.renderDeleteButton(item,idx)}</td>
     </tr>);
   },
-  renderWelcome:function() {
+  renderAccelon:function() {
     //if (this.state.installed && this.state.installed.length<2)  
-    return ( <div><hr/><a onClick={this.goAccelonWebsite} href="#">Download Accelon Apps</a></div> );
+    return ( <footer className="footer accelon text-center"><br/><br/><hr/>
+      Powered by <a onClick={this.goWebsite} href="#">Accelon</a>, Ksanaforge 2014 
+      </footer> );
     //else return <span></span>;
   },
-  goAccelonWebsite:function() {
+  goWebsite:function() {
     window.open("http://accelon.github.io");
   },
   render: function() {
     return (
       <div>
-        <table  className="table table-hover">
-        {this.state.installed.map(this.renderItem)}
-        </table>
-        {this.renderWelcome()}
+      <div className="row"> 
+        <div className="col-md-2"></div>
+        <div className="col-md-10">
+        <table className="table table-hover">
+          {this.state.installed.map(this.renderItem)}
+        </table> 
+        </div>
       </div>
+              {this.renderAccelon()}
+      </div>
+
     );
   }
 });

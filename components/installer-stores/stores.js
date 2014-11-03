@@ -28,6 +28,6 @@ var downloaded = Reflux.createStore({
     }
 });
 
-var stores={downloaded:downloaded,updatables:updatables};
+var stores={downloaded:downloaded,updatables:updatables,findAppById:findAppById};
 
 module.exports=stores;

@@ -69,11 +69,14 @@ var main = React.createClass({
     var args=Array.prototype.slice.call(arguments);
     var type=args.shift();
     if (type=="select") {
-      this.setState({image:"../"+args[0].dbid+"/banner.png"});
+      this.setState({image:"../"+args[0].dbid+"/banner.png", dbid:args[0].dbid});
     } else if (type=="askdownload") {
       this.askDownload(args[0]);
     } else if (type=="backFromDownload") {
       this.setState({askingDownload:false,app:null});  
+    } else if (type=="bannerclick") {
+      var app=stores.findAppById(this.state.dbid);
+      if (app && app.homepage)  window.open(app.homepage);
     }
   },
   
@@ -86,7 +89,7 @@ var main = React.createClass({
   render: function() {
     return (
       <div className="main">
-        <banner image={this.state.image}/>
+        <banner action={this.action} image={this.state.image}/>
         {this.state.askingDownload?this.renderAskDownload():this.renderInstalled()}    
       </div>
     );    
