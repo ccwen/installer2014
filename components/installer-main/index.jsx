@@ -10,7 +10,6 @@
       check no network or no update available 
       switch to the app directly
 */
-
 Require("bootstrap");
 //var othercomponent=Require("other"); 
 /*
