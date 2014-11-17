@@ -20,7 +20,8 @@ var installed = React.createClass({
   onDownloadsChanged:function(downloads) {
     this.setState({installed:downloads});
     this.props.action("select",this.state.installed[0]);
-    setTimeout(actions.checkHasUpdate,1000);
+    //wait one minute before checking update, avoid conflict with update from url
+    setTimeout(actions.checkHasUpdate,60000); 
   },
   componentDidMount:function() {
     this.unsubscribe1 = stores.downloaded.listen(this.onDownloadsChanged);

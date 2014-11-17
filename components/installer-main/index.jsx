@@ -31,7 +31,7 @@ var Download=Require("download");
 var liveupdate=Require("liveupdate");
 var main = React.createClass({
   getInitialState: function() {
-    return {dirs:[],image:"banner.png",app:null,askingDownload:false};
+    return {dirs:[],message:"",image:"banner.png",app:null,askingDownload:false};
   },
   checkHashTag:function(hash) {
     var idx=hash.indexOf("installfrom=");
@@ -39,26 +39,21 @@ var main = React.createClass({
     var installurl=hash.substring(idx+12).replace(/accelon:/g,'http:');
 
     var dbid=installurl.match(/\/([^\/]*?)\/?$/);
-    installurl+='/ksana.js';
+    if (installurl[installurl.length-1]!='/') installurl+='/';
+    installurl+='ksana.js';
     if (dbid) {
       dbid=dbid[1];
-      console.log(installurl);
+      console.log("install from",installurl);
+      this.setState({message:"checking "+installurl});
       liveupdate.jsonp(installurl,dbid,function(app){
+        console.log("asking download");
         this.askDownload(app);
       },this);
     }
   },
-  componentDidUpdate:function() {
-    if (window.location.hash && window.location.hash!=this.hash) {
-      this.checkHashTag(window.location.hash);
-      this.hash=window.location.hash;
-    } 
-  },  
   componentDidMount:function() {
-    if (window.location.hash && window.location.hash!=this.hash) {
-      this.checkHashTag(window.location.hash);
-      this.hash=window.location.hash;
-    } 
+    this.checkHashTag(window.location.hash);
+    this.hash=window.location.hash;
   },
   opennew:function() {
     // window.open(   'https://github.com', '_blank' ); for browser
@@ -70,7 +65,7 @@ var main = React.createClass({
     });
   },
   askDownload:function(app) { //from hashtag or installed
-    this.setState({askingDownload:true,app:app});
+    this.setState({message:"",askingDownload:true,app:app});
   },
   action:function() {
     var args=Array.prototype.slice.call(arguments);
@@ -97,7 +92,8 @@ var main = React.createClass({
     return (
       <div className="main">
         <Banner action={this.action} image={this.state.image}/>
-        {this.state.askingDownload?this.renderAskDownload():this.renderInstalled()}    
+        {this.state.message}
+        {this.state.askingDownload?this.renderAskDownload():this.renderInstalled()} 
       </div>
     );    
   }
