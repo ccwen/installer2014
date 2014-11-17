@@ -24,10 +24,10 @@ Require("bootstrap");
    downloaded,
    invited by friend (accelon://)
 */ 
-var banner=Require("banner");
-var installed=Require("installed");
+var Banner=Require("banner");
+var Installed=Require("installed");
 var stores=Require("stores");
-var download=Require("download");
+var Download=Require("download");
 var liveupdate=Require("liveupdate");
 var main = React.createClass({
   getInitialState: function() {
@@ -48,9 +48,17 @@ var main = React.createClass({
       },this);
     }
   },
+  componentDidUpdate:function() {
+    if (window.location.hash && window.location.hash!=this.hash) {
+      this.checkHashTag(window.location.hash);
+      this.hash=window.location.hash;
+    } 
+  },  
   componentDidMount:function() {
-    if (window.location.hash)  this.checkHashTag(window.location.hash);
-    //check hash tag
+    if (window.location.hash && window.location.hash!=this.hash) {
+      this.checkHashTag(window.location.hash);
+      this.hash=window.location.hash;
+    } 
   },
   opennew:function() {
     // window.open(   'https://github.com', '_blank' ); for browser
@@ -80,15 +88,15 @@ var main = React.createClass({
   },
   
   renderAskDownload:function() {
-    return <download app={this.state.app} action={this.action}/>
+    return <Download app={this.state.app} action={this.action}/>
   },
   renderInstalled:function() {
-    return <installed action={this.action}/>
+    return <Installed action={this.action}/>
   },
   render: function() {
     return (
       <div className="main">
-        <banner action={this.action} image={this.state.image}/>
+        <Banner action={this.action} image={this.state.image}/>
         {this.state.askingDownload?this.renderAskDownload():this.renderInstalled()}    
       </div>
     );    
