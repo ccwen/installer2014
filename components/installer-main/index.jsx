@@ -36,7 +36,7 @@ var main = React.createClass({
   checkHashTag:function(hash) {
     var idx=hash.indexOf("installfrom=");
     if (idx==-1) return;
-    var installurl=hash.substring(idx+12).replace(/accelon:/g,'http:');
+    var installurl=hash.substring(idx+12).replace(/.+?:/,'http:');
 
     var dbid=installurl.match(/\/([^\/]*?)\/?$/);
     if (installurl[installurl.length-1]!='/') installurl+='/';
