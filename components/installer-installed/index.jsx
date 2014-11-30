@@ -8,7 +8,7 @@ var actions=Require("actions");
 var installed = React.createClass({
   getInitialState: function() {
     return {
-      installed: [], selected:0, deletable:false
+      installed: [], selected:0, deletable:false, showextra:false
     };
   },
   switchApp:function(path){
@@ -21,7 +21,7 @@ var installed = React.createClass({
     this.setState({installed:downloads});
     this.props.action("select",this.state.installed[0]);
     //wait one minute before checking update, avoid conflict with update from url
-    setTimeout(actions.checkHasUpdate,60000); 
+    setTimeout(actions.checkHasUpdate,30000); 
   },
   componentDidMount:function() {
     this.unsubscribe1 = stores.downloaded.listen(this.onDownloadsChanged);
@@ -37,20 +37,21 @@ var installed = React.createClass({
     var path=e.target.dataset['path'];
     this.switchApp(path);
   },
-  showDeleteButton:function() {
-    this.setState({deletable:true});
+  showExtraInfo:function() {
+    if (ksana.platform=="ios" || ksana.platform=="android") {
+      this.setState({deletable:true});
+    }
+    this.setState({showextra:true});
   },
-
   select:function(e) {
     var target=e.target;
     while (target && target.nodeName!="TR")target=target.parentElement;
-    this.setState({selected:target.dataset.i,deletable:false});
+    this.setState({selected:target.dataset.i,deletable:false,showextra:false});
 
     //delete button is distracting, wait for 3 second
     clearTimeout(this.timer);
-    if (ksana.platform=="ios" || ksana.platform=="android") {
-      this.timer=setTimeout(this.showDeleteButton,3000);
-    }
+  
+    setTimeout(this.showExtraInfo,3000);
     this.props.action("select",this.state.installed[target.dataset.i]);
   },
   askDownload:function(e) {
@@ -72,6 +73,11 @@ var installed = React.createClass({
       return <a data-path={item.path} onClick={this.deleteApp} className="btn btn-danger pull-right">×</a>
     }
   },
+  renderDate:function(item,idx) {
+    if (idx==this.state.selected && this.state.showextra) {
+      return <span>{item.date}</span>
+    }
+  },
   renderCaption:function(item,idx) {
     if (idx==this.state.selected) {
       return <button title={item.version +"-"+ item.build} className="caption" data-path={item.path} onClick={this.opendb}>{item.title}</button>
@@ -86,7 +92,7 @@ var installed = React.createClass({
     if (idx==this.state.selected) classes="info";
     return (<tr data-i={idx}  onClick={this.select} key={"i"+idx} className={classes} >
       <td>{this.renderCaption(item,idx)} {this.renderUpdateButton(item,idx)}</td>
-      <td>{this.renderDeleteButton(item,idx)}</td>
+      <td>{this.renderDate(item,idx)} {this.renderDeleteButton(item,idx)}</td>
     </tr>);
   },
   renderAccelon:function() {
