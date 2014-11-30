@@ -91,8 +91,8 @@ var installed = React.createClass({
     if (item.path=="installer" && !item.hasUpdate) return null;
     if (idx==this.state.selected) classes="info";
     return (<tr data-i={idx}  onClick={this.select} key={"i"+idx} className={classes} >
-      <td>{this.renderCaption(item,idx)} {this.renderUpdateButton(item,idx)}</td>
-      <td>{this.renderDate(item,idx)} {this.renderDeleteButton(item,idx)}</td>
+      <td>{this.renderCaption(item,idx)} {this.renderUpdateButton(item,idx)} {this.renderDate(item,idx)}</td>
+      <td> {this.renderDeleteButton(item,idx)}</td>
     </tr>);
   },
   renderAccelon:function() {
