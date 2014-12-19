@@ -67,9 +67,9 @@ var main = React.createClass({
   componentDidMount:function() {
     if (!this.checkHashTag(window.location.hash)) {
       if (this.getAppCount()<2) {
-        var installurl="http://ya.ksana.tw/nanchuan/ksana.js";
+        var installurl="http://ya.ksana.tw/ksana.js"; //default url
         this.setState({message:"checking "+installurl, autoCheckUpdate:false});
-        this.downloadfrom(installurl,"nanchuan");  
+        this.downloadfrom(installurl,"");
       }
     }
     this.hash=window.location.hash;
