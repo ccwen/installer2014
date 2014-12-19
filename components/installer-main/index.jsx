@@ -31,11 +31,11 @@ var Download=Require("download");
 var liveupdate=Require("liveupdate");
 var main = React.createClass({
   getInitialState: function() {
-    return {dirs:[],message:"",image:"banner.png",app:null,askingDownload:false};
+    return {dirs:[],message:"",image:"banner.png",app:null,askingDownload:false,autoCheckUpdate:true};
   },
   checkHashTag:function(hash) {
     var idx=hash.indexOf("installfrom=");
-    if (idx==-1) return;
+    if (idx==-1) return false;
     var installurl=hash.substring(idx+12).replace(/.+?:/,'http:');
 
     var dbid=installurl.match(/\/([^\/]*?)\/?$/);
@@ -49,17 +49,29 @@ var main = React.createClass({
         if (dbid2) dbid=dbid2[1];
         console.log("dbid2",dbid);
       }
-
       console.log("install from",installurl);
-      this.setState({message:"checking "+installurl});
+      this.setState({message:"checking "+installurl, autoCheckUpdate:false});
+      this.downloadfrom(installurl,dbid);
+    }
+    return true;
+  },
+  downloadfrom:function(installurl,dbid) {
       liveupdate.jsonp(installurl,dbid,function(app){
         console.log("asking download");
         this.askDownload(app);
       },this);
-    }
+    },
+  getAppCount:function() {
+    return JSON.parse(kfs.listApps()).length;
   },
   componentDidMount:function() {
-    this.checkHashTag(window.location.hash);
+    if (!this.checkHashTag(window.location.hash)) {
+      if (this.getAppCount()<2) {
+        var installurl="http://ya.ksana.tw/nanchuan/ksana.js";
+        this.setState({message:"checking "+installurl, autoCheckUpdate:false});
+        this.downloadfrom(installurl,"nanchuan");  
+      }
+    }
     this.hash=window.location.hash;
   },
   opennew:function() {
@@ -93,13 +105,13 @@ var main = React.createClass({
     return <Download app={this.state.app} action={this.action}/>
   },
   renderInstalled:function() {
-    return <Installed action={this.action}/>
+    return <Installed action={this.action} autoCheckUpdate={this.state.autoCheckUpdate}/>
   },
   render: function() {
     return (
       <div className="main">
         <Banner action={this.action} image={this.state.image}/>
-        {this.state.message}
+        <span className="message">{this.state.message}</span>
         {this.state.askingDownload?this.renderAskDownload():this.renderInstalled()} 
       </div>
     );    

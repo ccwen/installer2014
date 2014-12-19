@@ -58,13 +58,19 @@ var download = React.createClass({
           </div>
           <div>Remaining {this.remainHumanSize()} <br/><hr/></div>
       </div>
-
       <div className="col-sm-2 col-sm-offset-5">
             <a onClick={this.cancelDownload} className="btn btn-danger">Cancel Download</a>
         </div>
     </div>
     );
   },
+  candownload:function() {
+    if (typeof ksanagap.runtime=="string") return true;//old format
+    
+    var tooold= (this.props.app.minruntime && this.props.app.minruntime>ksanagap.runtime_version);
+    if (tooold) return <span>Accelon version too old, please update</span> ;
+    else return <a onClick={this.startDownload} className="btn btn-primary btn-lg">Download</a> ;
+  },  
   renderAsking:function() {
     return (
       <div>
@@ -74,7 +80,7 @@ var download = React.createClass({
         Download Size: <span>{this.humanSize()}</span><br/>
         <div>
             <div className="col-sm-2 col-sm-offset-5">
-              <a onClick={this.startDownload} className="btn btn-primary btn-lg">Download</a>
+              {this.candownload()}
             </div>
         </div>
         
