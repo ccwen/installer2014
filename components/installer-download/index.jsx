@@ -77,7 +77,7 @@ var download = React.createClass({
         <a onClick={this.backFromDownload} className="btn btn-warning">Back</a><br/>
         {this.props.app.title} ({this.props.app.dbid})<br/>
         Build Date:{this.props.app.date}<br/>
-        Description: {this.props.description}<br/>
+        Description: {this.props.app.description}<br/>
         Download Size: <span>{this.humanSize()}</span><br/>
         <div>
             <div className="col-sm-2 col-sm-offset-5">
